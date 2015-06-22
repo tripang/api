@@ -5,6 +5,7 @@ namespace AppBundle\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use AppBundle\Entity\User;
+use AppBundle\Entity\Client;
 
 class DefaultController extends Controller
 {
@@ -13,14 +14,28 @@ class DefaultController extends Controller
      */
     public function indexAction()
     {
+        // add default client
+        $clientes = $this->getDoctrine()
+            ->getRepository('AppBundle:Client')
+            ->findAll();
+        if ($clientes) {
+            $client = $clientes[0];
+        } else {
+            $em = $this->getDoctrine()->getManager();
+            $client = new Client();
+            $client->setIsAuthorized(true);
+            $em->persist($client);
+            $em->flush();
+        }
+
         // add users by default
         $usersFromBase = $this->getDoctrine()
-                ->getRepository('AppBundle:User')
-                ->findAll();
+            ->getRepository('AppBundle:User')
+            ->findAll();
         if (!$usersFromBase) {
             $em = $this->getDoctrine()->getManager();
 
-            $newusers = json_decode('[
+            $users = json_decode('[
                 {
                     "nick": "ivanov",
                     "login": "ivan",
@@ -43,11 +58,11 @@ class DefaultController extends Controller
                 }
             ]');
 
-            foreach ($newusers as $newUser) {
+            foreach ($users as $userParam) {
                 $user = new User();
-                $user->setNick($newUser->nick);
-                $user->setLogin($newUser->login);
-                $user->setEmail($newUser->email);
+                $user->setNick($userParam->nick);
+                $user->setLogin($userParam->login);
+                $user->setEmail($userParam->email);
                 $em->persist($user);
             }
             $em->flush();
@@ -57,7 +72,10 @@ class DefaultController extends Controller
             ->getRepository('AppBundle:User')
             ->findAll();
 
-        return $this->render('default/index.html.twig', ['users' => $users]);
+        return $this->render('default/index.html.twig', [
+            'users' => $users,
+            'client' => $client->getId()
+        ]);
     }
 
 }

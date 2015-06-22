@@ -19,20 +19,28 @@ class ApiController extends Controller
      */
     public function UserAction(Request $request)
     {
-        $getId = $request->query->get('id');
-        $postId = $request->request->get('id');
-        $search = $request->query->get('search');
+        if ($this->isAuthorized(
+            $request->query->get('client'), $request->request->get('client')
+        )) {
+            $res['status'] = 'ok';
+            $getId = $request->query->get('id');
+            $postId = $request->request->get('id');
+            $search = $request->query->get('search');
 
-        if($getId) {
-            $res = $this->read($getId);
-        } elseif($postId) {
-            $nick = $request->request->get('nick');
-            $email = $request->request->get('email');
-            $res = $this->update($postId, $nick, $email);
-        } elseif ($search) {
-            $res = $this->search($search);
+            if($getId) {
+                $res = $this->read($getId);
+            } elseif($postId) {
+                $nick = $request->request->get('nick');
+                $email = $request->request->get('email');
+                $res = $this->update($postId, $nick, $email);
+            } elseif ($search) {
+                $res = $this->search($search);
+            } else {
+                $res = [];
+            }
         } else {
-            $res = [];
+            $res['status'] = 'error';
+            $res['error'] = 'Not authorized client';
         }
 
         // set api type
@@ -88,6 +96,27 @@ class ApiController extends Controller
             }
         }
         return $res;
+    }
+
+    private function isAuthorized($getClient, $postClient) {
+        if ($getClient) {
+            $client =  $getClient;
+        } elseif ($postClient) {
+            $client =  $postClient;
+        } else {
+            $client = false;
+        }
+
+        if ($client) {
+            $user = $this->getDoctrine()
+                ->getRepository('AppBundle:Client')
+                ->findOneById($client);
+            if ($user) {
+                return $user->getIsAuthorized();
+            }
+        }
+
+        return false;
     }
 
     private function search($search) {

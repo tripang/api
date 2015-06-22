@@ -36,4 +36,9 @@
         <input type="submit" value="JSON" />
     </form>
     <div id="api-rezult"></div>
+
+    <h3>Доступ к API только авторизованному клиентскому приложению</h3>
+    <div id="client" style="display: none">{{client}}</div>
+    <a href="/api/user?search=ivan&client=300&type=xml">Неавторизованный клиент увидит ошибку</a>
+
 {% endblock %}

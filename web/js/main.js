@@ -1,3 +1,5 @@
+var client = $('#client').html();
+
 // Получение списка пользователей по критерию (nick, login, email), GETзапрос
 $('form#search-form').submit(function (event) {
     var form = $(this),
@@ -6,7 +8,10 @@ $('form#search-form').submit(function (event) {
     $.ajax({
         method: "GET",
         url: "/api/user",
-        data: { search: search }
+        data: {
+            search: search,
+            client: client
+        }
     })
     .done(function (users) {
         var searchListHtml = "";
@@ -32,7 +37,10 @@ $('ul#idList a').on('click', function() {
     $.ajax({
         method: "GET",
         url: "/api/user",
-        data: { id: $(this).html() }
+        data: {
+            id: $(this).html(),
+            client: client
+        }
     })
     .done(function (user) {
         if (user) {
@@ -56,9 +64,10 @@ $('#update form').submit(function (event) {
         method: "POST",
         url: "/api/user",
         data: {
-            'id': $(this).attr('id'),
-            'nick': form.find("input[name='nick']").val(),
-            'email': form.find("input[name='email']").val()
+            id: $(this).attr('id'),
+            nick: form.find("input[name='nick']").val(),
+            email: form.find("input[name='email']").val(),
+            client: client
         }
     })
     .done(function (users) {
@@ -71,9 +80,9 @@ $('#update form').submit(function (event) {
 // Выбор типа возвращаемых данных (json или xml, по выбору клиентского приложения)
 $('form#api-form input').click(function (event) {
     if ($(this).val() === 'XML') {
-        window.location = '/api/user?search=ivan&type=xml';
+        window.location = '/api/user?search=ivan&client='+client+'&type=xml';
     } else if ($(this).val() === 'JSON') {
-        window.location = '/api/user?search=ivan&type=json';
+        window.location = '/api/user?search=ivan&client='+client+'&type=json';
     }
 
     event.preventDefault();
