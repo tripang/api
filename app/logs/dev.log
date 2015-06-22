@@ -1,0 +1,4 @@
+[2015-06-22 13:33:01] event.DEBUG: Notified event "console.command" to listener "Symfony\Component\HttpKernel\EventListener\DebugHandlersListener::configure". [] []
+[2015-06-22 13:33:01] event.DEBUG: Notified event "console.command" to listener "Symfony\Bridge\Monolog\Handler\ConsoleHandler::onCommand". [] []
+[2015-06-22 13:33:01] event.DEBUG: Notified event "console.command" to listener "Symfony\Bridge\Monolog\Handler\ConsoleHandler::onCommand". [] []
+[2015-06-22 13:33:01] php.DEBUG: fsockopen(): unable to connect to 127.0.0.1:8000 (Connection refused) {"type":2,"file":"/home/slava/w/api/vendor/symfony/symfony/src/Symfony/Bundle/FrameworkBundle/Command/ServerCommand.php","line":55,"level":4352} []
