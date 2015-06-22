@@ -41,4 +41,11 @@
     <div id="client" style="display: none">{{client}}</div>
     <a href="/api/user?search=ivan&client=300&type=xml">Неавторизованный клиент увидит ошибку</a>
 
+    <h3>Кастомные страницы 404й и 500й ошибок</h3>
+    <a href="/wrongpath">Кастомная страниц ошибок</a>
+
+    <h3>Mеханизм переключения окружения (development, production)</h3>
+    <p>В Symfony есть встроенное переключение окружения:
+        <a href="/app.php">Production</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="/app_dev.php">Development</a>
+    </p>
 {% endblock %}

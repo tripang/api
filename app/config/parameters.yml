@@ -10,3 +10,4 @@ parameters:
     mailer_user: null
     mailer_password: null
     secret: 2d605fd324de5d28f40e2814dc8a72a23b387787
+    twig.controller.exception.class: AppBundle\Controller\MyExceptionController
