@@ -1,5 +1,39 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    Homepage.
+    <h3>Получение списка пользователей по критерию (nick, login, email), GETзапрос</h3>
+    например: ivan, petr
+    <form id="search-form" action="/">
+        <input name="search" placeholder="Введите ник логин или email" required />
+        <input type="submit" value="Найти" />
+    </form>
+    <div id="search-rezult"></div>
+
+    <h3>Получение пользователя по id, GETзапрос</h3>
+    <ul id="idList">
+    {% for user in users %}
+        <a href="/">{{user.id}}</a>&nbsp;&nbsp;&nbsp;&nbsp;
+    {% endfor %}
+    </ul>
+
+    <h3>Обновление пользователя (изменение ника, email), POSTзапрос</h3>
+    <ul id="update">
+    {% for user in users %}
+        <li>
+            <form id="{{user.id}}" action="">
+                <input name="nick" value="{{user.nick}}" required />
+                <input name="email" value="{{user.email}}" required />
+                <input type="submit" value="Изменить" />
+            </form
+        </li>
+    {% endfor %}
+    </ul>
+
+    <h3>Выбор типа возвращаемых данных (json или xml, по выбору клиентского приложения)</h3>
+
+    <form id="api-form" action="/">
+        <input type="submit" value="XML" />
+        <input type="submit" value="JSON" />
+    </form>
+    <div id="api-rezult"></div>
 {% endblock %}
